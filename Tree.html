@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script type="text/javascript">
+
+          //根据key生成节点
+          function Node(key) {
+            this.left=null;
+            this.key=key;
+            this.right=null;
+          }
+
+          //生成二叉树
+          function BinaryTree() {
+            this.root=null;
+
+            //插入节点
+          this.insert=function (key) {
+              let newNode=new Node(key);
+              if (this.root===null) {
+                this.root=newNode;
+              } else this.insertNode(this.root,newNode);
+            }
+
+          this.insertNode=function (preNode,newNode) {
+              let preKey=preNode.key,
+                    newKey=newNode.key;
+              if (newKey<preKey) {
+                if (preNode.left===null) {
+                  preNode.left=newNode;
+                } else this.insertNode(preNode.left,newNode);
+              } else {
+                if (preNode.right===null) {
+                  preNode.right=newNode;
+                } else this.insertNode(preNode.right,newNode);
+              }
+            }
+
+            //中序遍历
+          function inOrderTraverseNode(node,callback) {
+              if (node!==null) {
+                inOrderTraverseNode(node.left,callback);
+                callback(node.key);
+                inOrderTraverseNode(node.right,callback);
+              }
+            }
+            this.inOrderTraverse=function (callback) {
+              inOrderTraverseNode(this.root,callback);
+            }
+
+            //前序遍历
+            function preOrderTraverseNode(node,callback) {
+              if (node!==null) {
+                callback(node.key);
+                preOrderTraverseNode(node.left,callback);
+                preOrderTraverseNode(node.right,callback);
+              }
+            }
+            this.preOrderTraverse=function (callback) {
+              preOrderTraverseNode(this.root,callback);
+            }
+
+             //后序遍历
+            function nextOrderTraverseNode(node,callback) {
+              if (node!==null) {
+                nextOrderTraverseNode(node.left,callback);
+                nextOrderTraverseNode(node.right,callback);
+                callback(node.key);
+              }
+            }
+            this.nextOrderTraverse=function (callback) {
+              nextOrderTraverseNode(this.root,callback);
+            }
+
+            //查找最小值
+            function minNode(node) {
+                while (node && node.left!==null) {
+                  node =node.left;
+                }
+                return node.key;
+            }
+            this.min=function () {
+              return minNode(this.root);
+            }
+
+            //查找最大值
+            function maxNode(node) {
+              if (node) {
+                while (node.right!==null) {
+                  node =node.right;
+                }
+                return node.key;
+              }
+            }
+            this.max=function () {
+              return maxNode(this.root);
+            }
+
+            //查找任意值
+            function findNode(node,key) {
+              if (node && key<node.key) {
+                return findNode(node.left,key);
+              } else if (node && key>node.key) {
+                return findNode(node.right,key)
+              } else if (node && key===node.key) {
+                return true;
+              } else return false;
+            }
+            this.serach=function (key) {
+              return findNode(this.root,key);
+            }
+
+            //删除节点
+            function minR(node) {
+              while (node && node.left!==null) {
+                node=node.left;
+              }
+              return node;
+            }
+            function removeNode(node,key) {
+              if (node===null) {
+                return null;
+              } else if (key<node.key) {
+                node.left=removeNode(node.left,key);
+                return node;
+              } else if (key>node.key) {
+                node.right=removeNode(node.right,key);
+                return node;
+              } else {
+                if (node.left===null && node.right===null) {
+                  node=null;
+                  return node;
+                } else if (node.left===null) {
+                  node=node.right;
+                  return node;
+                } else if (node.right===null) {
+                  node=node.left;
+                  return node;
+                } else {
+                  let minRnode=minR(node.right);
+                  node.key=minRnode.key;
+                  node.right=removeNode(node.right,minRnode.key);
+                  return node;
+                }
+              }
+            }
+            this.remove=function (key) {
+              removeNode(this.root,key);
+            }
+        }
+
+
+          //测试二叉树生成
+        const arr=[8,3,10,1,6,14,4,7,13];
+        let binaryTree=new BinaryTree();
+        arr.forEach(el=>binaryTree.insert(el));
+
+          //测试中序遍历
+        let ar=[]; 
+        function callbackIn(el) {
+            ar.push(el);
+        }
+        binaryTree.inOrderTraverse(callbackIn);
+        console.log(ar);
+
+        //测试前序遍历
+        let ar1=[]; 
+        function callbackPre(el) {
+            ar1.push(el);
+        }
+        binaryTree.preOrderTraverse(callbackPre);
+        console.log(ar1);
+        //测试后序遍历
+        let ar2=[]; 
+        function callbackNext(el) {
+            ar2.push(el);
+        }
+        binaryTree.nextOrderTraverse(callbackNext);
+        console.log(ar2);
+        //测试最小值查找
+        console.log('最小值： ',binaryTree.min());
+        //测试最大值查找
+        console.log('最大值： ',binaryTree.max());
+        //测试二叉树查找元素
+        console.log('该值存在与否： ',binaryTree.serach(4));
+        //测试删除节点
+        binaryTree.remove(14);
+
+        function callbackNext(el) {
+            console.log(el);
+        }
+        binaryTree.nextOrderTraverse(callbackNext);
+
+
+        
+
+          
+      </script>
+      <meta charset="utf-8">
+  </head>
+  <body>
+
+  </body>
+
+</html>
+
