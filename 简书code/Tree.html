@@ -111,9 +111,15 @@
             }
 
             //删除节点
-            function minR(node) {
-              while (node && node.left!==null) {
-                node=node.left;
+            // function minR(node) {
+            //   while (node && node.left!==null) {
+            //     node=node.left;
+            //   }
+            //   return node;
+            // }
+            function maxL(node) {
+              while (node && node.right!==null) {
+                node=node.right;
               }
               return node;
             }
@@ -137,9 +143,14 @@
                   node=node.left;
                   return node;
                 } else {
-                  let minRnode=minR(node.right);
-                  node.key=minRnode.key;
-                  node.right=removeNode(node.right,minRnode.key);
+                //   let minRnode=minR(node.right);
+                //   node.key=minRnode.key;
+                //   node.right=removeNode(node.right,minRnode.key);
+                //   return node;
+                // }
+                let maxLnode=maxL(node.left);
+                  node.key=maxLnode.key;
+                  node.left=removeNode(node.left,maxLnode.key);
                   return node;
                 }
               }
@@ -184,7 +195,7 @@
         //测试二叉树查找元素
         console.log('该值存在与否： ',binaryTree.serach(4));
         //测试删除节点
-        binaryTree.remove(14);
+        binaryTree.remove(8);
 
         function callbackNext(el) {
             console.log(el);
